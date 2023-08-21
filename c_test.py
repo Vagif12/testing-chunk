@@ -3,6 +3,29 @@ import spacy
 nlp = spacy.load("en_core_web_md")
 
 
+import unicodedata,re
+
+def strip_accents(s):
+    return ''.join(c for c in unicodedata.normalize('NFD', s)
+                   if unicodedata.category(c) != 'Mn')
+
+
+def escape_characters(text):
+    words = text.split(' ')
+    new_list = []
+    for word in words:
+        if "\u2019" not in word:
+            normalized_text = unicodedata.normalize("NFKD", word)
+            stripped_accents = strip_accents(normalized_text)
+            cleaned = re.sub(r"[^'\x00-\x7f]", r' ', stripped_accents).strip()
+            new_list.append(cleaned)
+        else:
+            new_list.append(word)
+
+    output = ' '.join(new_list)
+    return output.replace('\u2019', "'")
+
+
 def sliding_window_segmentation(text, window_size=3, overlap=2):
     # Split the text into sentences using a simple regex pattern
     doc = nlp(escape_characters(text))

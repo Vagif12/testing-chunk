@@ -10,6 +10,7 @@ def strip_accents(s):
                    if unicodedata.category(c) != 'Mn')
 
 
+# escape characters
 def escape_characters(text):
     words = text.split(' ')
     new_list = []

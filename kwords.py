@@ -14,6 +14,8 @@ def get_keywords(text):
     'Content-Type': 'application/json'
     }
 
+
+    # obtain response
     response = requests.request("POST", url, headers=headers, data=payload)
 
     keywords, scores, relevant_keywords = response.json()
